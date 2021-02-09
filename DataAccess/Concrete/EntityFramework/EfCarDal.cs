@@ -1,5 +1,7 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,54 +11,20 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : ICarDal
+    public class EfCarDal  :EfEntityRepositoryBase<Car,ReCapCarShopContext>, ICarDal
     {
-        public void Add(Car entity)
-        {
-            using (ReCapCarShopContext context=new ReCapCarShopContext())
-            {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-            }
-        }
-
-        public void Delete(Car entity)
+        public List<CarDetailDTO> GetCarDetails()
         {
             using (ReCapCarShopContext context = new ReCapCarShopContext())
             {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
+                var result = from cr in context.Cars
+                             join br in context.Brands
+                             on cr.BrandId equals br.BrandId
+                             join clr in context.Colors on
+                             cr.ColorId equals clr.ColorId
+                             select new CarDetailDTO { BrandName = br.BrandName, ColorName = clr.ColorName, DailyPrice = cr.DailyPrice, ModelName = cr.ModelName };
+                return result.ToList();
             }
-        }
-
-        public Car Get(Expression<Func<Car, bool>> filter = null)
-        {
-            using (ReCapCarShopContext context=new ReCapCarShopContext())
-            {
-                return context.Set<Car>().SingleOrDefault(filter);
-            }
-        }
-
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
-        {
-            using (ReCapCarShopContext context=new ReCapCarShopContext())
-            {
-                return filter == null 
-                    ? context.Set<Car>().ToList() 
-                    : context.Set<Car>().Where(filter).ToList();
-            }
-        }
-
-        public void Update(Car entity)
-        {
-            using (ReCapCarShopContext context = new ReCapCarShopContext())
-            {
-                var updatedEntity = context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
-            }
-        }
+        }     
     }
 }
