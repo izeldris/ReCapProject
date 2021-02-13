@@ -17,6 +17,6 @@ namespace Business.Constants
         public static string ItemsListed = "Bilgiler Listelendi";
         public static string MaintenanceTime = "Sistem Bakımdadır.";
         public static string ItemsListFailed = "Bilgiler Listelenemedi";
-
+        public static string RentalInvalid = "Araç Kiralanamaz";
     }
 }
