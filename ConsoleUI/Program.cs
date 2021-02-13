@@ -15,7 +15,7 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             //GetAllTest();
-            //GetCarDetailsTest();
+            GetCarDetailsTest();
             //AddCarTest(_carService);
 
 
@@ -52,7 +52,7 @@ namespace ConsoleUI
                 BrandId = 4,
                 ColorId = 3,
                 ModelYear = 2017,
-                DailyPrice = 229000,
+                DailyPrice = 229,
                 Descriptions = "2.0cc BiTurbo 4WD Şehir ve Arazi İçin Uygun",
                 ModelName = "Q8"
             };
@@ -64,10 +64,20 @@ namespace ConsoleUI
         private static void GetCarDetailsTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetCarDetails())
+
+            var result = carManager.GetCarDetails();
+            if (result.Success)
             {
-                Console.WriteLine(car.ModelName + "  <----------- % ---------->  " + car.BrandName);
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine(car.ModelName + "  <----------- % ---------->  " + car.BrandName);
+                }
             }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+            
         }
 
         private static void GetAllTest()
@@ -75,7 +85,7 @@ namespace ConsoleUI
             CarManager carManager = new CarManager(new InMemoryCarDal());
 
 
-            foreach (var car in carManager.GetAll())
+            foreach (var car in carManager.GetAll().Data)
             {
                 Console.WriteLine(car.Descriptions, car.DailyPrice, car.ModelYear);
             }

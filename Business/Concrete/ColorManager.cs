@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -16,34 +18,40 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-        public void Add(Color color)
+        public IResult Add(Color color)
         {
             _colorDal.Add(color);
-            Console.WriteLine("Renk Başarıyla Eklendi." + color.ColorName);
+            return new SuccessResult(Messages.ItemAdded);
         }
 
-        public void Delete(Color color)
+        public IResult Delete(Color color)
         {
             _colorDal.Delete(color);
-            Console.WriteLine("Renk Başarıyla Silindi" + color.ColorName);
+            return new SuccessResult(Messages.ItemDeleted);
         }
 
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {
             Console.WriteLine("------------------- Sistemde Kayıtlı Renkler ------------------- ");
-            return _colorDal.GetAll();
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.ItemsListed);
         }
 
-        public Color GetById(int id)
+        public IDataResult<Color> GetById(int id)
         {
-            Console.WriteLine("Girilen Renk Kodu  : {0}" , id);
-            return _colorDal.Get();
+            if (id <= 0)
+            {
+                return new ErrorDataResult<Color>(Messages.ItemsListFailed);
+            }
+            else
+            {
+                Console.WriteLine("Girilen Renk Kodu  : {0}", id);
+                return new SuccessDataResult<Color>(_colorDal.Get(), Messages.ItemsListed);
+            }        
         }
-
-        public void Update(Color color)
+        public IResult Update(Color color)
         {
             _colorDal.Delete(color);
-            Console.WriteLine("Renk Başarıyla Silindi" + color.ColorName);
+            return new SuccessResult(Messages.ItemDeleted);
         }
     }
 }
