@@ -18,5 +18,7 @@ namespace Business.Constants
         public static string MaintenanceTime = "Sistem Bakımdadır.";
         public static string ItemsListFailed = "Bilgiler Listelenemedi";
         public static string RentalInvalid = "Araç Kiralanamaz";
+
+        public static string ImageLimitExceeded = "Araç Fotoğraf Sayısı 5 Adetten Fazla Olamaz.";
     }
 }
