@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -20,5 +21,6 @@ namespace Business.Constants
         public static string RentalInvalid = "Araç Kiralanamaz";
 
         public static string ImageLimitExceeded = "Araç Fotoğraf Sayısı 5 Adetten Fazla Olamaz.";
+        public static string AuthorizationDenied = "Erişim Reddedildi!";
     }
 }

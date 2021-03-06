@@ -16,7 +16,7 @@ namespace Core.Utilities.Helpers
             {
                 using (var stream=new FileStream(sourcepath,FileMode.Create))
                 {
-                    file.CopyToAsync(stream);
+                    file.CopyTo(stream);
                 }
             }
             var result = newPath(file);
@@ -51,10 +51,10 @@ namespace Core.Utilities.Helpers
         }
         public static string newPath(IFormFile file)
         {
-            FileInfo fileInfo = new FileInfo(file.Name);
+            FileInfo fileInfo = new FileInfo(file.FileName);
             string extension = fileInfo.Extension;
             //---------------------------------------
-            string path = Environment.CurrentDirectory + @"\Images";
+            string path = Environment.CurrentDirectory + @"\wwwroot\CarPictures";
             var newPath = Guid.NewGuid().ToString() + "--" + DateTime.Now.Day + "--" + DateTime.Now.Month + "--" + DateTime.Now.Year + extension;
 
             string result = $@"{path}\{newPath}";
